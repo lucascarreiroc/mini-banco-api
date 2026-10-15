@@ -3,6 +3,7 @@ package com.lucascarreiro.minibanco.conta;
 import com.lucascarreiro.minibanco.cliente.Cliente;
 import com.lucascarreiro.minibanco.cliente.ClienteRepository;
 import com.lucascarreiro.minibanco.shared.exception.RecursoNaoEncontradoException;
+import com.lucascarreiro.minibanco.transacao.TransacaoRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,6 +25,9 @@ class ContaServiceTest {
 
     @Mock
     private ClienteRepository clienteRepository;
+
+    @Mock
+    private TransacaoRepository transacaoRepository;
 
     @InjectMocks
     private ContaService service;
