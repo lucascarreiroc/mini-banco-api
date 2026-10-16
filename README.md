@@ -30,14 +30,15 @@ Documentação interativa: http://localhost:8080/swagger-ui.html
 
 ## 📌 Endpoints
 
-| Método | Rota                     | Descrição               |
-|--------|--------------------------|-------------------------|
-| POST   | `/clientes`              | Cadastra um cliente     |
-| GET    | `/clientes/{id}`         | Busca um cliente        |
-| POST   | `/contas`                | Abre conta para cliente |
-| GET    | `/contas/{id}`           | Consulta conta e saldo  |
-| POST   | `/contas/{id}/deposito`  | Realiza depósito        |
-| POST   | `/contas/{id}/saque`     | Realiza saque           |
+| Método | Rota                    | Descrição               |
+|--------|-------------------------|-------------------------|
+| POST   | `/clientes`             | Cadastra um cliente     |
+| GET    | `/clientes/{id}`        | Busca um cliente        |
+| POST   | `/contas`               | Abre conta para cliente |
+| GET    | `/contas/{id}`          | Consulta conta e saldo  |
+| POST   | `/contas/{id}/deposito` | Realiza depósito        |
+| POST   | `/contas/{id}/saque`    | Realiza saque           |
+| POST   | `/transferencias`       | Transfere entre contas  |
 
 ## 🧠 Decisões técnicas
 
@@ -46,6 +47,9 @@ Documentação interativa: http://localhost:8080/swagger-ui.html
 - **Lock otimista com `@Version`**, impedindo que operações simultâneas sobrescrevam o saldo.
 - **Flyway** controla o schema; o Hibernate apenas valida (`ddl-auto: validate`).
 - **Erros padronizados** no formato Problem Details (RFC 7807).
+- **Transferência atômica** com `@Transactional`: débito, crédito e registro das transações acontecem juntos ou nenhum acontece.
+- **Histórico imutável**: cada movimentação gera um registro de transação que nunca é alterado, com o saldo após a operação.
+- **Conflitos de concorrência** retornam 409, graças ao lock otimista.
 
 ## 🗺️ Roadmap
 
