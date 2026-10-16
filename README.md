@@ -2,7 +2,7 @@
 
 API REST de carteira digital desenvolvida com **Java 21** e **Spring Boot 3**, simulando operações bancárias básicas com foco em regras de negócio, consistência de dados e boas práticas.
 
-> 🚧 Projeto em desenvolvimento - veja o [roadmap](#-roadmap).
+> 🚧 Projeto em desenvolvimento - veja o [roadmap](#%EF%B8%8F-roadmap).
 
 ## 🛠️ Tecnologias
 
