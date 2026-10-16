@@ -51,7 +51,7 @@ Documentação interativa: http://localhost:8080/swagger-ui.html
 
 - [x] Cadastro de clientes e abertura de contas
 - [x] Depósito, saque e consulta de saldo
-- [ ] Transferência entre contas
+- [x] Transferência entre contas
 - [ ] Extrato com histórico de transações paginado
 - [ ] Limite diário de saque/transferência
 - [ ] Autenticação com Spring Security + JWT
