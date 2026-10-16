@@ -5,6 +5,10 @@ spring:
     url: jdbc:postgresql://localhost:5433/minibanco
     username: minibanco
     password: minibanco
+  data:
+    web:
+      pageable:
+        max-page-size: 100
   jpa:
     hibernate:
       ddl-auto: validate   # quem cria/altera tabelas é o Flyway

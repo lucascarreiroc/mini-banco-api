@@ -30,15 +30,16 @@ Documentação interativa: http://localhost:8080/swagger-ui.html
 
 ## 📌 Endpoints
 
-| Método | Rota                    | Descrição               |
-|--------|-------------------------|-------------------------|
-| POST   | `/clientes`             | Cadastra um cliente     |
-| GET    | `/clientes/{id}`        | Busca um cliente        |
-| POST   | `/contas`               | Abre conta para cliente |
-| GET    | `/contas/{id}`          | Consulta conta e saldo  |
-| POST   | `/contas/{id}/deposito` | Realiza depósito        |
-| POST   | `/contas/{id}/saque`    | Realiza saque           |
-| POST   | `/transferencias`       | Transfere entre contas  |
+| Método | Rota                    | Descrição                               |
+|--------|-------------------------|-----------------------------------------|
+| POST   | `/clientes`             | Cadastra um cliente                     |
+| GET    | `/clientes/{id}`        | Busca um cliente                        |
+| POST   | `/contas`               | Abre conta para cliente                 |
+| GET    | `/contas/{id}`          | Consulta conta e saldo                  |
+| POST   | `/contas/{id}/deposito` | Realiza depósito                        |
+| POST   | `/contas/{id}/saque`    | Realiza saque                           |
+| POST   | `/transferencias`       | Transfere entre contas                  |
+| GET    | `/contas/{id}/extrato`  | Extrato paginado com filtro por período |
 
 ## 🧠 Decisões técnicas
 
@@ -50,13 +51,16 @@ Documentação interativa: http://localhost:8080/swagger-ui.html
 - **Transferência atômica** com `@Transactional`: débito, crédito e registro das transações acontecem juntos ou nenhum acontece.
 - **Histórico imutável**: cada movimentação gera um registro de transação que nunca é alterado, com o saldo após a operação.
 - **Conflitos de concorrência** retornam 409, graças ao lock otimista.
+- **Extrato paginado** com `Pageable`, ordenado das transações mais recentes, filtro por período (padrão de 30 dias) e limite máximo de 100 itens por página.
+- **Prevenção do problema N+1** com `@EntityGraph`, carregando a conta contraparte na mesma consulta.
+- **Índice composto** em `(conta_id, data_hora)` para consultas de extrato rápidas.
 
 ## 🗺️ Roadmap
 
 - [x] Cadastro de clientes e abertura de contas
 - [x] Depósito, saque e consulta de saldo
 - [x] Transferência entre contas
-- [ ] Extrato com histórico de transações paginado
+- [x] Extrato com histórico de transações paginado
 - [ ] Limite diário de saque/transferência
 - [ ] Autenticação com Spring Security + JWT
 - [ ] Testes de integração com Testcontainers
