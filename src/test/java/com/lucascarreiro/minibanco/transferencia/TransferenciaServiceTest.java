@@ -43,8 +43,8 @@ class TransferenciaServiceTest {
 
     @BeforeEach
     void setUp() {
-        origem = new Conta("00000001", new Cliente("Maria Silva", "52998224725", "maria@email.com"));
-        destino = new Conta("00000002", new Cliente("João Souza", "11144477735", "joao@email.com"));
+        origem = new Conta("00000001", new Cliente("Maria Silva", "52998224725", "maria@email.com", "hash-qualquer"));
+        destino = new Conta("00000002", new Cliente("João Souza", "11144477735", "joao@email.com", "hash-qualquer"));
         origem.depositar(new BigDecimal("100.00"));
     }
 

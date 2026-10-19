@@ -54,6 +54,7 @@ Documentação interativa: http://localhost:8080/swagger-ui.html
 - **Extrato paginado** com `Pageable`, ordenado das transações mais recentes, filtro por período (padrão de 30 dias) e limite máximo de 100 itens por página.
 - **Prevenção do problema N+1** com `@EntityGraph`, carregando a conta contraparte na mesma consulta.
 - **Índice composto** em `(conta_id, data_hora)` para consultas de extrato rápidas.
+- **Senhas com hash BCrypt** (salt automático e custo configurável), nunca armazenadas em texto puro nem expostas nas respostas da API.
 
 ## 🗺️ Roadmap
 

@@ -84,7 +84,7 @@ class ExtratoServiceTest {
 
     @Test
     void deveConverterTransacoesEmItensDoExtrato() {
-        Conta conta = new Conta("00000001", new Cliente("Maria Silva", "52998224725", "maria@email.com"));
+        Conta conta = new Conta("00000001", new Cliente("Maria Silva", "52998224725", "maria@email.com", "hash-qualquer"));
         conta.depositar(new BigDecimal("150.00"));
         Transacao deposito = new Transacao(conta, TipoTransacao.DEPOSITO, new BigDecimal("150.00"), null);
 

@@ -17,7 +17,7 @@ class ContaTest {
 
     @BeforeEach
     void setUp() {
-        Cliente cliente = new Cliente("Maria Silva", "12345678909", "maria@email.com");
+        Cliente cliente = new Cliente("Maria Silva", "12345678909", "maria@email.com", "hash-qualquer");
         conta = new Conta("00000001", cliente);
     }
 

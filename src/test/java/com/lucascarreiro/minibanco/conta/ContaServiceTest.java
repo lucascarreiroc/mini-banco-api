@@ -43,7 +43,7 @@ class ContaServiceTest {
 
     @Test
     void deveDepositarNaContaExistente() {
-        Conta conta = new Conta("00000001", new Cliente("Maria Silva", "12345678909", "maria@email.com"));
+        Conta conta = new Conta("00000001", new Cliente("Maria Silva", "12345678909", "maria@email.com", "hash-qualquer"));
         when(contaRepository.findById(1L)).thenReturn(Optional.of(conta));
 
         ContaResponse resposta = service.depositar(1L, new BigDecimal("200.00"));

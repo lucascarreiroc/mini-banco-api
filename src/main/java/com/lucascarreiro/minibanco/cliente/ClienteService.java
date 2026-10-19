@@ -2,6 +2,7 @@ package com.lucascarreiro.minibanco.cliente;
 
 import com.lucascarreiro.minibanco.shared.exception.RecursoNaoEncontradoException;
 import com.lucascarreiro.minibanco.shared.exception.RegraNegocioException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,9 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class ClienteService {
 
     private final ClienteRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public ClienteService(ClienteRepository repository) {
+    public ClienteService(ClienteRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -25,7 +28,8 @@ public class ClienteService {
             throw new RegraNegocioException("Já existe um cliente com este e-mail");
         }
 
-        Cliente cliente = repository.save(new Cliente(request.nome(), cpf, request.email()));
+        String senhaHash = passwordEncoder.encode(request.senha());
+        Cliente cliente = repository.save(new Cliente(request.nome(), cpf, request.email(), senhaHash));
         return ClienteResponse.de(cliente);
     }
 
