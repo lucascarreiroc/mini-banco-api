@@ -28,6 +28,16 @@ mvn spring-boot:run
 
 Documentação interativa: http://localhost:8080/swagger-ui.html
 
+Para testar as rotas protegidas, faça login em `/auth/login` e use o botão **Authorize** com o token retornado.
+
+## 🧪 Testes
+
+```bash
+mvn test
+```
+
+Roda os testes unitários e os de integração. Os testes de integração usam Testcontainers, que sobe automaticamente um PostgreSQL temporário em container, então basta ter o Docker em execução, sem precisar subir o banco nem a aplicação.
+
 ## 📌 Endpoints
 
 | Método | Rota                     | Descrição                               | Autenticação |
@@ -63,6 +73,7 @@ Documentação interativa: http://localhost:8080/swagger-ui.html
 - **Proteção contra enumeração de usuários**: CPF inexistente e senha incorreta retornam a mesma resposta.
 - **Limite diário configurável** (`application.yml`) para saques e transferências enviadas, calculado a partir do histórico de transações, sem colunas que precisem ser zeradas.
 - **Relógio injetável (`Clock`)**, permitindo testar regras que dependem de data e hora com um horário fixo.
+- **Testes de integração com Testcontainers**: a API completa (segurança, regras de negócio e banco) é testada contra um PostgreSQL real em container, incluindo a prova de rollback em falhas no meio de uma transferência.
 
 ## 🗺️ Roadmap
 
@@ -72,7 +83,7 @@ Documentação interativa: http://localhost:8080/swagger-ui.html
 - [x] Extrato com histórico de transações paginado
 - [x] Autenticação com Spring Security + JWT
 - [x] Limite diário de saque/transferência
-- [ ] Testes de integração com Testcontainers
+- [x] Testes de integração com Testcontainers
 - [ ] Pipeline CI com GitHub Actions
 - [ ] Deploy em nuvem
 
