@@ -40,6 +40,7 @@ Documentação interativa: http://localhost:8080/swagger-ui.html
 | POST   | `/contas/{id}/saque`    | Realiza saque                           |
 | POST   | `/transferencias`       | Transfere entre contas                  |
 | GET    | `/contas/{id}/extrato`  | Extrato paginado com filtro por período |
+| POST   | `/auth/login`           | Autentica e retorna token JWT           |       
 
 ## 🧠 Decisões técnicas
 

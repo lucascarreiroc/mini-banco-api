@@ -51,4 +51,11 @@ public class GlobalExceptionHandler {
         problem.setTitle("Conflito de concorrência");
         return problem;
     }
+
+    @ExceptionHandler(CredenciaisInvalidasException.class)
+    public ProblemDetail handleCredenciaisInvalidas(CredenciaisInvalidasException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
+        problem.setTitle("Falha na autenticação");
+        return problem;
+    }
 }
