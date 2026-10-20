@@ -1,6 +1,7 @@
 package com.lucascarreiro.minibanco.conta;
 
 import com.lucascarreiro.minibanco.shared.security.UsuarioAutenticado;
+import com.lucascarreiro.minibanco.transacao.LimiteResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -49,5 +50,10 @@ public class ContaController {
     public ContaResponse sacar(@PathVariable Long id, @RequestBody @Valid ValorRequest request,
                                @AuthenticationPrincipal Jwt jwt) {
         return service.sacar(id, request.valor(), UsuarioAutenticado.id(jwt));
+    }
+
+    @GetMapping("/{id}/limite")
+    public LimiteResponse consultarLimite(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
+        return service.consultarLimite(id, UsuarioAutenticado.id(jwt));
     }
 }

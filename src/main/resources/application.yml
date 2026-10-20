@@ -21,3 +21,6 @@ spring:
 jwt:
   secret: ${JWT_SECRET:dev-secret-mini-banco-trocar-em-producao-0123456789abcdef}
   expiracao-minutos: 60
+banco:
+  limites:
+    diario: 5000.00

@@ -7,6 +7,7 @@ import com.lucascarreiro.minibanco.shared.exception.AcessoNegadoException;
 import com.lucascarreiro.minibanco.shared.exception.RecursoNaoEncontradoException;
 import com.lucascarreiro.minibanco.shared.exception.RegraNegocioException;
 import com.lucascarreiro.minibanco.shared.exception.SaldoInsuficienteException;
+import com.lucascarreiro.minibanco.transacao.LimiteDiarioService;
 import com.lucascarreiro.minibanco.transacao.TipoTransacao;
 import com.lucascarreiro.minibanco.transacao.Transacao;
 import com.lucascarreiro.minibanco.transacao.TransacaoRepository;
@@ -39,6 +40,9 @@ class TransferenciaServiceTest {
 
     @Mock
     private TransacaoRepository transacaoRepository;
+
+    @Mock
+    private LimiteDiarioService limiteDiarioService;
 
     @InjectMocks
     private TransferenciaService service;

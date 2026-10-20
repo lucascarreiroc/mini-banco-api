@@ -42,6 +42,7 @@ Documentação interativa: http://localhost:8080/swagger-ui.html
 | POST   | `/contas/{id}/saque`     | Realiza saque                           | Token        |
 | POST   | `/transferencias`        | Transfere entre contas                  | Token        |
 | GET    | `/contas/{id}/extrato`   | Extrato paginado com filtro por período | Token        |     
+| GET    | `/contas/{id}/limite`    | Limite diário disponível                | Token        |
 
 ## 🧠 Decisões técnicas
 
@@ -60,6 +61,8 @@ Documentação interativa: http://localhost:8080/swagger-ui.html
 - **Autenticação stateless com JWT** assinado (HS256), usando o suporte oficial do Spring Security (OAuth2 Resource Server), com validação de assinatura, expiração e emissor.
 - **Autorização por posse**: o id do cliente vem sempre do token, nunca da requisição, e cada operação verifica se a conta pertence a quem está logado (403 caso contrário).
 - **Proteção contra enumeração de usuários**: CPF inexistente e senha incorreta retornam a mesma resposta.
+- **Limite diário configurável** (`application.yml`) para saques e transferências enviadas, calculado a partir do histórico de transações, sem colunas que precisem ser zeradas.
+- **Relógio injetável (`Clock`)**, permitindo testar regras que dependem de data e hora com um horário fixo.
 
 ## 🗺️ Roadmap
 
@@ -68,7 +71,7 @@ Documentação interativa: http://localhost:8080/swagger-ui.html
 - [x] Transferência entre contas
 - [x] Extrato com histórico de transações paginado
 - [x] Autenticação com Spring Security + JWT
-- [ ] Limite diário de saque/transferência
+- [x] Limite diário de saque/transferência
 - [ ] Testes de integração com Testcontainers
 - [ ] Pipeline CI com GitHub Actions
 - [ ] Deploy em nuvem

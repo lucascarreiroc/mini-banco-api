@@ -4,6 +4,7 @@ import com.lucascarreiro.minibanco.cliente.Cliente;
 import com.lucascarreiro.minibanco.cliente.ClienteRepository;
 import com.lucascarreiro.minibanco.shared.exception.AcessoNegadoException;
 import com.lucascarreiro.minibanco.shared.exception.RecursoNaoEncontradoException;
+import com.lucascarreiro.minibanco.transacao.LimiteDiarioService;
 import com.lucascarreiro.minibanco.transacao.Transacao;
 import com.lucascarreiro.minibanco.transacao.TransacaoRepository;
 import org.junit.jupiter.api.Test;
@@ -33,8 +34,12 @@ class ContaServiceTest {
     @Mock
     private TransacaoRepository transacaoRepository;
 
+    @Mock
+    private LimiteDiarioService limiteDiarioService;
+
     @InjectMocks
     private ContaService service;
+
 
     @Test
     void deveLancarExcecaoQuandoContaNaoExiste() {
