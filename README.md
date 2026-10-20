@@ -30,17 +30,18 @@ Documentação interativa: http://localhost:8080/swagger-ui.html
 
 ## 📌 Endpoints
 
-| Método | Rota                    | Descrição                               |
-|--------|-------------------------|-----------------------------------------|
-| POST   | `/clientes`             | Cadastra um cliente                     |
-| GET    | `/clientes/{id}`        | Busca um cliente                        |
-| POST   | `/contas`               | Abre conta para cliente                 |
-| GET    | `/contas/{id}`          | Consulta conta e saldo                  |
-| POST   | `/contas/{id}/deposito` | Realiza depósito                        |
-| POST   | `/contas/{id}/saque`    | Realiza saque                           |
-| POST   | `/transferencias`       | Transfere entre contas                  |
-| GET    | `/contas/{id}/extrato`  | Extrato paginado com filtro por período |
-| POST   | `/auth/login`           | Autentica e retorna token JWT           |       
+| Método | Rota                     | Descrição                               | Autenticação |
+|--------|--------------------------|-----------------------------------------|--------------|
+| POST   | `/clientes`              | Cadastra um cliente                     | Pública      |
+| POST   | `/auth/login`            | Autentica e retorna token JWT           | Pública      |
+| GET    | `/clientes/me`           | Dados do cliente logado                 | Token        |
+| POST   | `/contas`                | Abre conta para o cliente logado        | Token        |
+| GET    | `/contas`                | Lista as contas do cliente logado       | Token        |
+| GET    | `/contas/{id}`           | Consulta conta e saldo                  | Token        |
+| POST   | `/contas/{id}/deposito`  | Realiza depósito                        | Token        |
+| POST   | `/contas/{id}/saque`     | Realiza saque                           | Token        |
+| POST   | `/transferencias`        | Transfere entre contas                  | Token        |
+| GET    | `/contas/{id}/extrato`   | Extrato paginado com filtro por período | Token        |     
 
 ## 🧠 Decisões técnicas
 
@@ -56,6 +57,9 @@ Documentação interativa: http://localhost:8080/swagger-ui.html
 - **Prevenção do problema N+1** com `@EntityGraph`, carregando a conta contraparte na mesma consulta.
 - **Índice composto** em `(conta_id, data_hora)` para consultas de extrato rápidas.
 - **Senhas com hash BCrypt** (salt automático e custo configurável), nunca armazenadas em texto puro nem expostas nas respostas da API.
+- **Autenticação stateless com JWT** assinado (HS256), usando o suporte oficial do Spring Security (OAuth2 Resource Server), com validação de assinatura, expiração e emissor.
+- **Autorização por posse**: o id do cliente vem sempre do token, nunca da requisição, e cada operação verifica se a conta pertence a quem está logado (403 caso contrário).
+- **Proteção contra enumeração de usuários**: CPF inexistente e senha incorreta retornam a mesma resposta.
 
 ## 🗺️ Roadmap
 
@@ -63,8 +67,8 @@ Documentação interativa: http://localhost:8080/swagger-ui.html
 - [x] Depósito, saque e consulta de saldo
 - [x] Transferência entre contas
 - [x] Extrato com histórico de transações paginado
+- [x] Autenticação com Spring Security + JWT
 - [ ] Limite diário de saque/transferência
-- [ ] Autenticação com Spring Security + JWT
 - [ ] Testes de integração com Testcontainers
 - [ ] Pipeline CI com GitHub Actions
 - [ ] Deploy em nuvem

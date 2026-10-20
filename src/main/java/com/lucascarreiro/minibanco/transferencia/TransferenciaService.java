@@ -2,6 +2,7 @@ package com.lucascarreiro.minibanco.transferencia;
 
 import com.lucascarreiro.minibanco.conta.Conta;
 import com.lucascarreiro.minibanco.conta.ContaRepository;
+import com.lucascarreiro.minibanco.shared.exception.AcessoNegadoException;
 import com.lucascarreiro.minibanco.shared.exception.RecursoNaoEncontradoException;
 import com.lucascarreiro.minibanco.shared.exception.RegraNegocioException;
 import com.lucascarreiro.minibanco.transacao.TipoTransacao;
@@ -24,12 +25,15 @@ public class TransferenciaService {
     }
 
     @Transactional
-    public TransferenciaResponse transferir(TransferenciaRequest request) {
+    public TransferenciaResponse transferir(TransferenciaRequest request, Long clienteId) {
         if (request.contaOrigemId().equals(request.contaDestinoId())) {
             throw new RegraNegocioException("Não é possível transferir para a mesma conta");
         }
 
         Conta origem = buscarConta(request.contaOrigemId());
+        if (!origem.pertenceA(clienteId)) {
+            throw new AcessoNegadoException();
+        }
         Conta destino = buscarConta(request.contaDestinoId());
 
         origem.sacar(request.valor());

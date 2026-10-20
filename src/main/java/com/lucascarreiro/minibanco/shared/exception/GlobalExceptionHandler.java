@@ -58,4 +58,11 @@ public class GlobalExceptionHandler {
         problem.setTitle("Falha na autenticação");
         return problem;
     }
+
+    @ExceptionHandler(AcessoNegadoException.class)
+    public ProblemDetail handleAcessoNegado(AcessoNegadoException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.getMessage());
+        problem.setTitle("Acesso negado");
+        return problem;
+    }
 }

@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "contas")
@@ -61,6 +62,10 @@ public class Conta {
         if (valor == null || valor.compareTo(BigDecimal.ZERO) <= 0) {
             throw new RegraNegocioException("O valor deve ser maior que zero");
         }
+    }
+
+    public boolean pertenceA(Long clienteId) {
+        return Objects.equals(cliente.getId(), clienteId);
     }
 
     public Long getId() { return id; }

@@ -1,6 +1,8 @@
 package com.lucascarreiro.minibanco.transacao;
 
+import com.lucascarreiro.minibanco.conta.Conta;
 import com.lucascarreiro.minibanco.conta.ContaRepository;
+import com.lucascarreiro.minibanco.shared.exception.AcessoNegadoException;
 import com.lucascarreiro.minibanco.shared.exception.RecursoNaoEncontradoException;
 import com.lucascarreiro.minibanco.shared.exception.RegraNegocioException;
 import org.springframework.data.domain.Page;
@@ -25,9 +27,12 @@ public class ExtratoService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ExtratoItemResponse> consultar(Long contaId, LocalDate dataInicio, LocalDate dataFim, Pageable pageable) {
-        if (!contaRepository.existsById(contaId)) {
-            throw new RecursoNaoEncontradoException("Conta não encontrada: " + contaId);
+    public Page<ExtratoItemResponse> consultar(Long contaId, LocalDate dataInicio, LocalDate dataFim,
+                                               Pageable pageable, Long clienteId) {
+        Conta conta = contaRepository.findById(contaId)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Conta não encontrada: " + contaId));
+        if (!conta.pertenceA(clienteId)) {
+            throw new AcessoNegadoException();
         }
 
         LocalDate fim = dataFim != null ? dataFim : LocalDate.now();

@@ -1,7 +1,10 @@
 package com.lucascarreiro.minibanco.cliente;
 
+import com.lucascarreiro.minibanco.shared.security.UsuarioAutenticado;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -25,8 +28,8 @@ public class ClienteController {
         return ResponseEntity.created(location).body(criado);
     }
 
-    @GetMapping("/{id}")
-    public ClienteResponse buscar(@PathVariable Long id) {
-        return service.buscarPorId(id);
+    @GetMapping("/me")
+    public ClienteResponse meusDados(@AuthenticationPrincipal Jwt jwt) {
+        return service.buscarPorId(UsuarioAutenticado.id(jwt));
     }
 }

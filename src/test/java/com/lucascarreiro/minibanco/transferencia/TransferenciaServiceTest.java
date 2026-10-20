@@ -3,6 +3,7 @@ package com.lucascarreiro.minibanco.transferencia;
 import com.lucascarreiro.minibanco.cliente.Cliente;
 import com.lucascarreiro.minibanco.conta.Conta;
 import com.lucascarreiro.minibanco.conta.ContaRepository;
+import com.lucascarreiro.minibanco.shared.exception.AcessoNegadoException;
 import com.lucascarreiro.minibanco.shared.exception.RecursoNaoEncontradoException;
 import com.lucascarreiro.minibanco.shared.exception.RegraNegocioException;
 import com.lucascarreiro.minibanco.shared.exception.SaldoInsuficienteException;
@@ -16,6 +17,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,6 +30,9 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class TransferenciaServiceTest {
+
+    private static final Long CLIENTE_ORIGEM_ID = 1L;
+    private static final Long CLIENTE_DESTINO_ID = 2L;
 
     @Mock
     private ContaRepository contaRepository;
@@ -45,6 +50,8 @@ class TransferenciaServiceTest {
     void setUp() {
         origem = new Conta("00000001", new Cliente("Maria Silva", "52998224725", "maria@email.com", "hash-qualquer"));
         destino = new Conta("00000002", new Cliente("João Souza", "11144477735", "joao@email.com", "hash-qualquer"));
+        ReflectionTestUtils.setField(origem.getCliente(), "id", CLIENTE_ORIGEM_ID);
+        ReflectionTestUtils.setField(destino.getCliente(), "id", CLIENTE_DESTINO_ID);
         origem.depositar(new BigDecimal("100.00"));
     }
 
@@ -54,7 +61,7 @@ class TransferenciaServiceTest {
         when(contaRepository.findById(2L)).thenReturn(Optional.of(destino));
 
         TransferenciaResponse resposta = service.transferir(
-                new TransferenciaRequest(1L, 2L, new BigDecimal("40.00")));
+                new TransferenciaRequest(1L, 2L, new BigDecimal("40.00")), CLIENTE_ORIGEM_ID);
 
         assertThat(origem.getSaldo()).isEqualByComparingTo("60.00");
         assertThat(destino.getSaldo()).isEqualByComparingTo("40.00");
@@ -75,7 +82,7 @@ class TransferenciaServiceTest {
     @Test
     void naoDeveTransferirParaMesmaConta() {
         assertThatThrownBy(() -> service.transferir(
-                new TransferenciaRequest(1L, 1L, new BigDecimal("10.00"))))
+                new TransferenciaRequest(1L, 1L, new BigDecimal("10.00")), CLIENTE_ORIGEM_ID))
                 .isInstanceOf(RegraNegocioException.class)
                 .hasMessageContaining("mesma conta");
 
@@ -88,7 +95,7 @@ class TransferenciaServiceTest {
         when(contaRepository.findById(2L)).thenReturn(Optional.of(destino));
 
         assertThatThrownBy(() -> service.transferir(
-                new TransferenciaRequest(1L, 2L, new BigDecimal("100.01"))))
+                new TransferenciaRequest(1L, 2L, new BigDecimal("100.01")), CLIENTE_ORIGEM_ID))
                 .isInstanceOf(SaldoInsuficienteException.class);
 
         assertThat(origem.getSaldo()).isEqualByComparingTo("100.00");
@@ -102,9 +109,21 @@ class TransferenciaServiceTest {
         when(contaRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> service.transferir(
-                new TransferenciaRequest(1L, 99L, new BigDecimal("10.00"))))
+                new TransferenciaRequest(1L, 99L, new BigDecimal("10.00")), CLIENTE_ORIGEM_ID))
                 .isInstanceOf(RecursoNaoEncontradoException.class)
                 .hasMessageContaining("99");
+
+        assertThat(origem.getSaldo()).isEqualByComparingTo("100.00");
+        verify(transacaoRepository, never()).save(any());
+    }
+
+    @Test
+    void naoDeveTransferirDeContaDeOutroCliente() {
+        when(contaRepository.findById(1L)).thenReturn(Optional.of(origem));
+
+        assertThatThrownBy(() -> service.transferir(
+                new TransferenciaRequest(1L, 2L, new BigDecimal("10.00")), CLIENTE_DESTINO_ID))
+                .isInstanceOf(AcessoNegadoException.class);
 
         assertThat(origem.getSaldo()).isEqualByComparingTo("100.00");
         verify(transacaoRepository, never()).save(any());

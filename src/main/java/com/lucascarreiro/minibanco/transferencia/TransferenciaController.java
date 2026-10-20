@@ -1,6 +1,9 @@
 package com.lucascarreiro.minibanco.transferencia;
 
+import com.lucascarreiro.minibanco.shared.security.UsuarioAutenticado;
 import jakarta.validation.Valid;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +20,8 @@ public class TransferenciaController {
     }
 
     @PostMapping
-    public TransferenciaResponse transferir(@RequestBody @Valid TransferenciaRequest request) {
-        return service.transferir(request);
+    public TransferenciaResponse transferir(@RequestBody @Valid TransferenciaRequest request,
+                                            @AuthenticationPrincipal Jwt jwt) {
+        return service.transferir(request, UsuarioAutenticado.id(jwt));
     }
 }
