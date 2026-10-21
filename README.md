@@ -4,7 +4,10 @@
 
 API REST de carteira digital desenvolvida com **Java 21** e **Spring Boot 3**, simulando operações bancárias básicas com foco em regras de negócio, consistência de dados e boas práticas.
 
-> 🚧 Projeto em desenvolvimento - veja o [roadmap](#%EF%B8%8F-roadmap).
+🌐 **API no ar:** [mini-banco-api-h5fc.onrender.com](https://mini-banco-api-h5fc.onrender.com)
+
+> Hospedada no plano gratuito do Render: a primeira requisição após um período sem uso pode levar cerca de um minuto, enquanto a aplicação inicia.
+
 
 ## 🛠️ Tecnologias
 
@@ -77,6 +80,7 @@ Roda os testes unitários e os de integração. Os testes de integração usam T
 - **Relógio injetável (`Clock`)**, permitindo testar regras que dependem de data e hora com um horário fixo.
 - **Testes de integração com Testcontainers**: a API completa (segurança, regras de negócio e banco) é testada contra um PostgreSQL real em container, incluindo a prova de rollback em falhas no meio de uma transferência.
 - **Integração contínua com GitHub Actions**: a cada push, o projeto é compilado e todos os testes (unitários e de integração com Testcontainers) rodam automaticamente.
+- **Deploy com Docker** (build em múltiplas etapas) no Render, com banco PostgreSQL no Neon e configuração sensível (credenciais e chave do JWT) apenas por variáveis de ambiente.
 
 ## 🗺️ Roadmap
 
@@ -88,7 +92,7 @@ Roda os testes unitários e os de integração. Os testes de integração usam T
 - [x] Limite diário de saque/transferência
 - [x] Testes de integração com Testcontainers
 - [x] Pipeline CI com GitHub Actions
-- [ ] Deploy em nuvem
+- [x] Deploy em nuvem
 
 ## 👤 Autor
 
