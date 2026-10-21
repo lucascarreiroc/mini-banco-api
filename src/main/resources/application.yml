@@ -1,10 +1,14 @@
+server:
+  port: ${PORT:8080}
+  forward-headers-strategy: framework
+
 spring:
   application:
     name: mini-banco
   datasource:
-    url: jdbc:postgresql://localhost:5433/minibanco
-    username: minibanco
-    password: minibanco
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5433/minibanco}
+    username: ${DATABASE_USERNAME:minibanco}
+    password: ${DATABASE_PASSWORD:minibanco}
   data:
     web:
       pageable:
