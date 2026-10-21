@@ -1,5 +1,7 @@
 # Mini Banco 🏦
 
+![CI](https://github.com/lucascarreiroc/mini-banco-api/actions/workflows/ci.yml/badge.svg)
+
 API REST de carteira digital desenvolvida com **Java 21** e **Spring Boot 3**, simulando operações bancárias básicas com foco em regras de negócio, consistência de dados e boas práticas.
 
 > 🚧 Projeto em desenvolvimento - veja o [roadmap](#%EF%B8%8F-roadmap).
@@ -74,6 +76,7 @@ Roda os testes unitários e os de integração. Os testes de integração usam T
 - **Limite diário configurável** (`application.yml`) para saques e transferências enviadas, calculado a partir do histórico de transações, sem colunas que precisem ser zeradas.
 - **Relógio injetável (`Clock`)**, permitindo testar regras que dependem de data e hora com um horário fixo.
 - **Testes de integração com Testcontainers**: a API completa (segurança, regras de negócio e banco) é testada contra um PostgreSQL real em container, incluindo a prova de rollback em falhas no meio de uma transferência.
+- **Integração contínua com GitHub Actions**: a cada push, o projeto é compilado e todos os testes (unitários e de integração com Testcontainers) rodam automaticamente.
 
 ## 🗺️ Roadmap
 
@@ -84,7 +87,7 @@ Roda os testes unitários e os de integração. Os testes de integração usam T
 - [x] Autenticação com Spring Security + JWT
 - [x] Limite diário de saque/transferência
 - [x] Testes de integração com Testcontainers
-- [ ] Pipeline CI com GitHub Actions
+- [x] Pipeline CI com GitHub Actions
 - [ ] Deploy em nuvem
 
 ## 👤 Autor
